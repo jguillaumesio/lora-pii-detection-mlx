@@ -1,0 +1,28 @@
+{
+  "mode": "zero-shot",
+  "model": "mlx-community/Mistral-7B-Instruct-v0.3-4bit",
+  "adapter_path": null,
+  "n": 400,
+  "accuracy": 0.66,
+  "precision": 0.639,
+  "recall": 0.686,
+  "f1": 0.662,
+  "false_positive_rate": 0.364,
+  "valid_json_rate": 0.998,
+  "confusion": {
+    "tp": 133,
+    "fp": 75,
+    "fn": 61,
+    "tn": 131
+  },
+  "per_type_f1": {
+    "email": 0.745,
+    "phone": 0.628,
+    "name": 0.531,
+    "iban": 0.358,
+    "address": 0.5,
+    "dob": 0.383
+  },
+  "seconds": 332.6,
+  "seconds_per_example": 0.83
+}

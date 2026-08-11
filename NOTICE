@@ -1,0 +1,47 @@
+Third-party data attribution
+============================
+
+This repository contains code only. The training data is not redistributed
+here: build_dataset.py downloads it from the sources below at build time.
+
+Positives
+---------
+DataikuNLP/kiji-pii-training-data
+https://huggingface.co/datasets/DataikuNLP/kiji-pii-training-data
+Licensed under the Apache License, Version 2.0.
+
+Negatives
+---------
+witfoo/syslog-to-artifact
+https://huggingface.co/datasets/witfoo/syslog-to-artifact
+Licensed under the Apache License, Version 2.0.
+
+A copy of the Apache License, Version 2.0 is available at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Base model
+----------
+mlx-community/Mistral-7B-Instruct-v0.3-4bit
+https://huggingface.co/mlx-community/Mistral-7B-Instruct-v0.3-4bit
+Mistral-7B-Instruct-v0.3 is released by Mistral AI under the Apache License,
+Version 2.0.
+
+Tooling
+-------
+mlx-lm, https://github.com/ml-explore/mlx-lm, MIT License.
+
+Original content
+----------------
+data/ood_test.jsonl (30 hand-written out-of-distribution lines) and all code in
+this repository are original work, released under the MIT License in LICENSE.
+Any names, email addresses, phone numbers, IBANs and addresses appearing in
+that file are fabricated for testing and do not refer to real people.
+
+Sources deliberately not used
+-----------------------------
+ai4privacy/pii-masking-200k: dual license, free only for individuals,
+non-profits, and for-profit organizations of three staff or fewer.
+
+LogHub (github.com/logpai/loghub): licensed for research or academic work only.
+Several of its systems additionally contain real usernames, home directory
+paths and email addresses.

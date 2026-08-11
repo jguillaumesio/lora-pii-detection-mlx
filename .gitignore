@@ -1,0 +1,8 @@
+.venv/
+adapters/
+data/train.jsonl
+data/valid.jsonl
+data/test.jsonl
+data/test_raw.jsonl
+data/loghub/
+__pycache__/

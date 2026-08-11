@@ -1,0 +1,28 @@
+{
+  "mode": "lora",
+  "model": "mlx-community/Mistral-7B-Instruct-v0.3-4bit",
+  "adapter_path": "./adapters",
+  "n": 400,
+  "accuracy": 0.95,
+  "precision": 0.926,
+  "recall": 0.974,
+  "f1": 0.95,
+  "false_positive_rate": 0.073,
+  "valid_json_rate": 1.0,
+  "confusion": {
+    "tp": 189,
+    "fp": 15,
+    "fn": 5,
+    "tn": 191
+  },
+  "per_type_f1": {
+    "email": 1.0,
+    "phone": 0.983,
+    "name": 0.855,
+    "iban": 0.95,
+    "address": 0.914,
+    "dob": 0.875
+  },
+  "seconds": 362.4,
+  "seconds_per_example": 0.91
+}

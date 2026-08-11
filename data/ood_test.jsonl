@@ -1,0 +1,30 @@
+{"text": "escalating to L2, the reporter is Jean-Baptiste Moreau-Lefevre and he is losing patience", "label": {"pii": true, "types": ["name"]}}
+{"text": "hey can you ping me back on +33 6 12 34 56 78, tried twice already", "label": {"pii": true, "types": ["phone"]}}
+{"text": "GET /api/v2/users?cursor=eyJpZCI6MTIzNH0%3D 200 14ms", "label": {"pii": false, "types": []}}
+{"text": "the sepa mandate references DE89 3704 0044 0532 0130 00 which the bank rejected twice", "label": {"pii": true, "types": ["iban"]}}
+{"text": "container web-7f9c4b restarted 3 times in the last hour, check the memory limits", "label": {"pii": false, "types": []}}
+{"text": "invoice contact updated: a.dupont+billing@societe-exemple.fr (was the old one)", "label": {"pii": true, "types": ["email"]}}
+{"text": "test account for QA, do not delete, credentials are in the shared vault", "label": {"pii": false, "types": []}}
+{"text": "colis a livrer 12 rue des Petits-Champs, 75002 Paris, code portail 4512A", "label": {"pii": true, "types": ["address"]}}
+{"text": "user reports the export contains 4823 rows, expected around 5000", "label": {"pii": false, "types": []}}
+{"text": "DOB on the passport reads 03 Nov 1979 but our record says 1997, likely a typo", "label": {"pii": true, "types": ["dob"]}}
+{"text": "cron job daily-cleanup finished, deleted 1204 stale sessions", "label": {"pii": false, "types": []}}
+{"text": "Please remove all data for the account belonging to Sarah O'Neill (GDPR request received today)", "label": {"pii": true, "types": ["name"]}}
+{"text": "TLS handshake failed with upstream, cert expired 2026-02-14", "label": {"pii": false, "types": []}}
+{"text": "je confirme mon nouveau numero : 07.88.99.10.23, l'ancien ne marche plus", "label": {"pii": true, "types": ["phone"]}}
+{"text": "merge conflict in src/payments/refund.ts, resolving now", "label": {"pii": false, "types": []}}
+{"text": "shipping label printed for M. et Mme Kowalski, 8 impasse du Moulin, 33000 Bordeaux", "label": {"pii": true, "types": ["name", "address"]}}
+{"text": "rate limit hit for tenant acme-corp, 429 returned 88 times", "label": {"pii": false, "types": []}}
+{"text": "forwarded the thread to marie.l@example.org and cc'd support", "label": {"pii": true, "types": ["email"]}}
+{"text": "backup snapshot snap-0a1b2c3d4e5f67890 completed in 4m12s", "label": {"pii": false, "types": []}}
+{"text": "client ne le 12 janvier 1985, dossier a verifier avant validation", "label": {"pii": true, "types": ["dob"]}}
+{"text": "the webhook secret whsec_9x8y7z6w5v4u3t2s1r was leaked in the logs, rotating", "label": {"pii": false, "types": []}}
+{"text": "call transcript: caller identified himself as Tom, refused to give further details", "label": {"pii": true, "types": ["name"]}}
+{"text": "disk usage on /var/lib/docker is at 91 percent", "label": {"pii": false, "types": []}}
+{"text": "virement recu depuis FR76 3000 6000 0112 3456 7890 189, montant 1250 EUR", "label": {"pii": true, "types": ["iban"]}}
+{"text": "feature flag new-checkout enabled for 10 percent of traffic", "label": {"pii": false, "types": []}}
+{"text": "envoyez le contrat a l.bernard@cabinet-exemple.fr avant vendredi svp", "label": {"pii": true, "types": ["email"]}}
+{"text": "queue depth 0, all workers idle since 14:20", "label": {"pii": false, "types": []}}
+{"text": "adresse de facturation : 45 avenue Victor Hugo, appartement 3B, 69006 Lyon", "label": {"pii": true, "types": ["address"]}}
+{"text": "PR #482 approved by two reviewers, merging after CI", "label": {"pii": false, "types": []}}
+{"text": "customer Anna Schmidt, born 1990-07-22, requests a full data export", "label": {"pii": true, "types": ["name", "dob"]}}

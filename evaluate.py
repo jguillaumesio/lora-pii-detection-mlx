@@ -43,6 +43,39 @@ FEW_SHOT = [
      {"pii": True, "types": ["name"]}),
 ]
 
+# Same size and the same 3 negative / 3 positive balance as FEW_SHOT above, and the
+# same three PII types (email, phone, name), but every example is drawn from
+# data/train.jsonl instead of being written by hand. Each was checked against
+# data/test.jsonl for exact-string absence.
+#
+# Why this exists: a reader pointed out that the example pool is part of the prompted
+# method's input, so kinship between the pool and the test set inflates the prompted
+# arm and not the fine-tuned one. FEW_SHOT above is hand-written in the shapes of the
+# v1 synthetic generator, which is exactly that kinship. This set swaps the pool for
+# one whose provenance matches the v2 test set, holding everything else fixed.
+FEW_SHOT_V2 = [
+    ("<187>315106: WCFREP01: Jul 26 18:40:55.494 CDT: %LINK-3-UPDOWN: Interface "
+     "GigabitEthernet2/0/19, changed state to down",
+     {"pii": False, "types": []}),
+    ("Jul 26 12:38:30 oakrhelv002 filebeat: 2024-07-26T12:38:30.317-0500 INFO "
+     "log/harvester.go:333 File is inactive: /var/log/btmp-20240701.",
+     {"pii": False, "types": []}),
+    ("Bonjour, je suis le client. Mon numero de TVA est la reference fiscale. Vous "
+     "pouvez consulter mes factures sur le wiki interne.",
+     {"pii": False, "types": []}),
+    ("Jul 26 06:55:42 oakrhelv002 filebeat: retryer: send unwait signal to consumer "
+     "user=emily.nguyen@mail.com.au",
+     {"pii": True, "types": ["email"]}),
+    ("2 733177541390 eni-09380904df4353210 - - - - - - - 1722000541 1722000572 - "
+     "NODATA callback=(406) 809-7623",
+     {"pii": True, "types": ["phone"]}),
+    ("the customer MacIntyre our regional hub, the region the delivery zone the "
+     "support address | the hotline",
+     {"pii": True, "types": ["name"]}),
+]
+
+FEW_SHOT_SETS = {"v1": FEW_SHOT, "v2": FEW_SHOT_V2}
+
 
 def parse_prediction(raw: str):
     """Extract the first JSON object; return None when unparseable."""
@@ -61,13 +94,13 @@ def parse_prediction(raw: str):
     return {"pii": bool(obj["pii"]), "types": [t for t in types if t in TYPES]}
 
 
-def build_prompt(tokenizer, text: str, few_shot: bool):
+def build_prompt(tokenizer, text: str, few_shot: bool, shots=None):
     """Mistral requires alternating user/assistant turns and rejects a
     standalone system role, so instructions ride on the first user turn.
     Identical shape to the training data in generate_dataset.py."""
     messages = []
     if few_shot:
-        for i, (ex_text, ex_label) in enumerate(FEW_SHOT):
+        for i, (ex_text, ex_label) in enumerate(shots if shots is not None else FEW_SHOT):
             content = f"{SYSTEM_PROMPT}\n\nLine: {ex_text}" if i == 0 else f"Line: {ex_text}"
             messages.append({"role": "user", "content": content})
             messages.append({
@@ -89,6 +122,8 @@ def main():
     ap.add_argument("--test-file", default="test_raw.jsonl",
                     help="ood_test.jsonl for the hand-written out-of-distribution set")
     ap.add_argument("--tag", default="", help="suffix for the results filenames")
+    ap.add_argument("--few-shot-set", choices=["v1", "v2"], default="v1",
+                    help="which example pool to prompt with (see FEW_SHOT_SETS)")
     args = ap.parse_args()
 
     kwargs = {"adapter_path": args.adapter_path} if args.adapter_path else {}
@@ -106,7 +141,8 @@ def main():
     start = time.time()
 
     for row in rows:
-        prompt = build_prompt(tokenizer, row["text"], few_shot=(args.mode == "few-shot"))
+        prompt = build_prompt(tokenizer, row["text"], few_shot=(args.mode == "few-shot"),
+                              shots=FEW_SHOT_SETS[args.few_shot_set])
         raw = generate(model, tokenizer, prompt=prompt, max_tokens=64, sampler=sampler,
                        verbose=False)
         pred = parse_prediction(raw)

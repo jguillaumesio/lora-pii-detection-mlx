@@ -45,3 +45,13 @@ non-profits, and for-profit organizations of three staff or fewer.
 LogHub (github.com/logpai/loghub): licensed for research or academic work only.
 Several of its systems additionally contain real usernames, home directory
 paths and email addresses.
+
+Prediction logs
+---------------
+results/*_predictions.jsonl record the input line, the gold label and the model's
+raw output for every evaluated row. The input lines in the main-test logs are
+derived from DataikuNLP/kiji-pii-training-data (Apache-2.0, attributed above);
+they are included so the paired significance tests in the follow-up article can
+be re-run without rebuilding the dataset. The out-of-distribution logs
+(*_ood_predictions.jsonl) contain only the 30 hand-written lines original to this
+repository.

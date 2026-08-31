@@ -73,6 +73,69 @@ Validation loss: 3.537 at iteration 1, 0.508 at 250, 0.491 at 500. Training was
 stopped at 500 because the curve had flattened: the previous 250 iterations
 bought a 3% improvement.
 
+## Follow-up: one artifact, two sets
+
+A reader pointed out that the drop comparison in the original write-up was not
+what it looked like, and he was right. The "5 point drop" for the fine-tune
+compared **two different adapters** (v1-trained on the v1 set against v2-trained
+on the v2 set), while the prompted rows were genuinely the same method twice.
+
+Holding the artifact fixed instead:
+
+| v1-trained adapter | Accuracy | F1 | False positives | Misses |
+|---|---|---|---|---|
+| on the v1 synthetic set | 100% | 1.000 | 0 | 0 |
+| on the v2 real set | **67%** | 0.701 | 93 | 39 |
+
+```bash
+.venv/bin/python evaluate.py --mode lora \
+  --adapter-path ./adapters_v1_synthetic --limit 400 --tag _v1adapter_realset
+```
+
+Every row below is now one method or artifact measured twice, and the drops rank
+by how much each had been fitted to the v1 distribution:
+
+| Method, held fixed | v1 set | v2 set | Drop |
+|---|---|---|---|
+| Adapter trained on v1 data | 100% | 67% | **33** |
+| Few-shot, 6 v1-shaped examples | 94% | 66% | **28** |
+| Zero-shot, no examples | 88% | 66% | **22** |
+
+### Does the few-shot example pool contaminate the test set?
+
+The six hand-written `FEW_SHOT` examples in `evaluate.py` are instances of the v1
+generator's own templates, so the prompted arm carried v1-shaped hints. `FEW_SHOT_V2`
+swaps them for six drawn from `data/train.jsonl` (same count, same 3/3 balance, same
+three types, each verified absent from the test set):
+
+```bash
+.venv/bin/python evaluate.py --mode few-shot --few-shot-set v2 --limit 400 --tag _v2examples
+```
+
+| On the v2 real set (n=400) | Accuracy | F1 | Precision | Recall |
+|---|---|---|---|---|
+| Few-shot, v1 hand-written examples | 66.2% | 0.707 | 0.610 | 0.840 |
+| Few-shot, v2 in-domain examples | 67.7% | 0.705 | 0.634 | 0.794 |
+
+1.5 points, which is nothing: both arms ran on the same rows, so use a paired test.
+
+```bash
+python3 mcnemar.py
+```
+
+| Comparison | Discordant pairs | Exact p |
+|---|---|---|
+| few-shot v1 vs v2 examples | 21 / 27 | 0.4709 (not significant) |
+| zero-shot vs few-shot v1 | 53 / 54 | 1.0000 (not significant) |
+| few-shot v2 vs LoRA | 4 / 113 | < 0.0001 (significant) |
+
+So the examples were worth 6 points on the set that shared their provenance and
+nothing on the set that did not, and matching the provenance recovers nothing
+either: six examples of any origin cannot express this task. The fine-tune's
+advantage, meanwhile, is a 113-to-4 split.
+
+Full write-up: [A reader read my benchmark better than I did](https://jguillaumesio.com/blog/llm-benchmark-leakage-few-shot/)
+
 ## The finding worth stealing
 
 An earlier version of this experiment used 800 examples I generated from my own
